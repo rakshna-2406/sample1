@@ -717,3 +717,50 @@ print("Logistic Regression Performance")
 print("Accuracy:", accuracy_score(y_test_log, pred))
 print("Confusion Matrix:\n", confusion_matrix(y_test_log, pred))
 print("Classification Report:\n", classification_report(y_test_log, pred))
+
+//6.py
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+
+df = pd.read_csv("Supermart Grocery Sales - Retail Analytics Dataset.csv")
+
+# Select numeric columns
+X = df.select_dtypes(include='number')
+
+model = KMeans(n_clusters=3)
+model.fit(X)
+
+df['Cluster'] = model.labels_
+
+print("Error Measure (Inertia):", model.inertia_)
+
+centers = model.cluster_centers_
+
+bias = np.mean(np.linalg.norm(X - centers[model.labels_], axis=1))
+
+print("Bias:", bias)
+
+print(df.head())
+
+//7.py
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("Supermart Grocery Sales - Retail Analytics Dataset.csv")
+
+df = df.head(100)
+
+# Create time index
+df['Time'] = range(len(df))
+
+# Select numeric column
+col = df.select_dtypes(include='number').columns[0]
+
+plt.plot(df['Time'], df[col])
+
+plt.xlabel("Time")
+plt.ylabel(col)
+plt.title("Time Series Analysis")
+
+plt.show()
